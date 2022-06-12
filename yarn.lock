@@ -28,6 +28,11 @@
   "resolved" "https://registry.npmjs.org/@sindresorhus/is/-/is-0.14.0.tgz"
   "version" "0.14.0"
 
+"@splidejs/splide@^4.0.6":
+  "integrity" "sha512-JHJJX08qAe5N33p6TKBAs5hRkJHmmG+Kh9LPWkOQgcV07yG+YEiY26lXi/xbH6Rb0UUxbs3Y3Iz/1WYjmfGhjA=="
+  "resolved" "https://registry.npmjs.org/@splidejs/splide/-/splide-4.0.6.tgz"
+  "version" "4.0.6"
+
 "@szmarczak/http-timer@^1.1.2":
   "integrity" "sha512-XIB2XbzHTN6ieIjfIMV9hlVcfPU26s2vafYWQcZHWXHOxiaRZYEDKEwdl129Zyg50+foYV2jCgtrqSA6qNuNSA=="
   "resolved" "https://registry.npmjs.org/@szmarczak/http-timer/-/http-timer-1.1.2.tgz"

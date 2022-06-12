@@ -1,5 +1,5 @@
 import data from "../db.json" assert { type: "json" };
-console.log(data);
+console.log(data.filter((val) => val.id === 1));
 const category = data.map((val) => ({
   id: val.categories.id,
   name: val.categories.name,
@@ -19,29 +19,35 @@ const headerContainer = $(".header-container");
 const listCategory = $(".list-category");
 const listProducts = $(".list-product");
 const sliders = $(".sliderss");
-console.log(headerContainer);
-const app = {
+
+
+const gasPrice = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "VNI",
+  minimumFractionDigits: 3,
+});
+
+
+export const app = {
   data,
   header: ["Nhà sách Tiki"],
-  sliders : [
-    './Img/Rectangle (12).png',
-    './Img/IimgSlide4.webp',
-    './Img/imgSlide2.webp',
-    './Img/ImgSlide3.webp'
+  sliders: [
+    "./Img/Rectangle (12).png",
+    "./Img/IimgSlide4.webp",
+    "./Img/imgSlide2.webp",
+    "./Img/ImgSlide3.webp",
   ],
 
-  renderSlider(data){
-    const sliderList = data.map((val,index)=> (
-      `
+  renderSlider(data) {
+    const sliderList = data.map(
+      (val, index) =>
+        `
       <img class="slider" src="${val}" alt=""  />
       `
-    ))
+    );
 
-   return sliders.innerHTML = sliderList.join('')
-
-
+    return (sliders.innerHTML = sliderList.join(""));
   },
-
 
   renderHeader(header) {
     const headers = header.map(
@@ -52,50 +58,69 @@ const app = {
                 `
     );
 
-    return (headerContainer.innerHTML = headers.join(""));
+    return headerContainer.innerHTML = headers.join("")
   },
 
   renderCategory(data) {
     const categorys = data.map(
-      (val) =>
+      
+      (val,index) =>
         `
           <ul>
 
-            <li class="my-[8px] cursor-pointer">${val.name}</li>
+            <li onlick="handleClick(${val.id}")" class="listproduct my-[8px] cursor-pointer" data-index="${val.id}"">${val.name}</li>
           </ul>
         `
     );
+   
 
-    return listCategory.innerHTML = categorys.join("");
+    return listCategory.innerHTML = categorys.join("")
   },
 
-  rederListPoduct(data) {
-    const listProduct = data.map(
-      (val) => 
-        `
-        
-        <a class=" 300px md:h-[500px] xl:h-[400px] list" href="">
-        <div class=" pt-[10px]">
-        <div class="thumb-nail mx-[auto] xl:w-[200px]  xl:h-[200px] mb-[12px]">
-            <img class=" w-[90%] h-[90%] m-[auto]" src=${val?.images[0].base_url} alt="">
-        </div>
-        <div class="p-[17px]">
+  
 
-            <div class="tiki-now w-[56px] h-[16px]">
+  rederListPoduct(data) {
+   
+
+     const listProduct = data.map(
+      (val) =>
+        `
+       
+        <a  class=" a  md:h-[500px] xl:h-[400px] list cursor-pointer" href="./daitail.html"  data-index="${val.id}" >
+        <div class=" pt-[10px] data-index="${val.id}">
+        <div data-index="${val.id}" class="thumb-nail mx-[auto] xl:w-[200px] md:h-[300px]  xl:h-[200px] sm:mb-[12px] xl:mb-[0px]">
+            <img class=" w-[95%] h-[90%] xl:h-[100%] m-[auto]" src=${
+              val?.images[0].base_url
+            } alt="">
+        </div>
+        <div data-index="${val.id}" class="p-[17px]">
+
+            <div data-index="${val.id}" class="tiki-now w-[56px] h-[16px]">
                 <img class="" src="./Img/Rectangle (13).png" alt="">
             </div>
-            <div class="giao text-[#00AB56] text-[11px] font-medium my-[8px] ">
+            <div data-index="${val.id}" class="giao text-[#00AB56] text-[11px] font-medium my-[8px] ">
                 GIAO SIÊU TỐC 2H
             </div>
-            <p class="name text-xs mb-[8px] font-light">${val?.name}</p>
-            <div class="danh gia ">
+            <p data-index="${val.id}" class="name text-xs mb-[8px] font-">${
+              val?.name.length > 70 ? val?.name.slice(0, 50) : val?.name
+            }</p>
+            <div data-index="${val.id}" class="danh gia ">
                 <i style="color: rgb(253, 216, 54)" class="fa-solid fa-star text-xs"></i>
                 <i style="color: rgb(253, 216, 54)" class="fa-solid fa-star text-xs"></i>
                 <i style="color: rgb(253, 216, 54)" class="fa-solid fa-star text-xs"></i>
                 <i style="color: rgb(253, 216, 54)" class="fa-solid fa-star text-xs"></i>
                 <i style="color: rgb(253, 216, 54)" class="fa-solid fa-star text-xs"></i>
-                <span class="text-[11px] text-[#787878] px-[6px]">${val?.quantity_sold?.text || 'Đã bán : 0'}</span>
+                <span class="text-[11px] text-[#787878] px-[6px]">${
+                  val?.quantity_sold?.text || "Đã bán : 0"
+                }</span>
             </div>
+            <div>
+            <span data-index="${val.id}" class="text-[#FF424E]">${new Intl.NumberFormat("vi-VN", {
+              style: "currency",
+              currency: "VND",
+            }).format(val?.original_price)}</span>
+            </div>
+          
 
         </div>    
     </div>
@@ -104,67 +129,83 @@ const app = {
         `
     );
 
-    return listProducts.innerHTML = listProduct.join('');
+    return listProducts.innerHTML = listProduct.join("")
+  },
+  
+  handleEvent: function() {
+    console.log(listCategory);
+    listCategory.onclick = function(e) {
+      if(app.header.length >=2) {
+        app.header.pop()
+      }
+      JSON.parse(localStorage.getItem('listCategory)')) !== undefined ? localStorage.removeItem('listCategory') : ''
+      const newdata = data.filter((val)=> val.categories.id === Number(e.target.dataset.index)) 
+      console.log(newdata);
+      app.header.push(newdata[0].categories?.name)
+      localStorage.setItem('listCategory', JSON.stringify(app.header))
+      app.renderHeader(app.header)
+      app.rederListPoduct(newdata)
+      
+    }
+    listProducts.onclick = function(e) {
+      localStorage.removeItem('daitel')
+      const daitels = e.target.closest('.a')
+      console.log(daitels.dataset.index);
+      
+     localStorage.setItem('daitel',JSON.stringify(daitels.dataset.index))
+    
+    }
+    
   },
 
   start() {
     this.renderHeader(this.header);
     this.renderCategory(categoryList);
-    this.rederListPoduct(this.data)
+    this.rederListPoduct(this.data);
     this.renderSlider(this.sliders);
+    this.handleEvent()
+
   },
 };
 
 app.start();
 
+
 // slider
 
+const upSlider = $(".opacity1");
+const backSlider = $(".opacity2");
+const slider = $$(".slider");
+console.log(slider[0].style.zIndex = 2);
 
-const upSlider = $('.opacity1')
-const backSlider = $('.opacity2')
-const slider = $$('.slider')
-// console.log(slider[0].style.zIndex = 2);
-// slider[3].styles.tabIndex = 2
-let index = 1
-function handleUpSlider (list) {
 
- if(index > list.length) {
-  index = 1
-}
- 
+function handleUpSlider(list) {
+  let index = 0;
+
   function handleUp() {
-    
-    ++index
-      console.log(index);
+    ++index;
+    console.log(index);
 
-   if(index > 4) {
-     index = 0
-     list[3].style.zIndex = 2
+    if (index > 4) {
+      index = 0;
+      list[3].style.zIndex = 2;
 
-     list[0].style.zIndex = 2
-   }
-   console.log(index);
-   
-    list[index-2].style.zIndex = 0
-   
-      list[3].style.zIndex = 0
-    
-   
-   
-   return   list[index - 1 ].style.zIndex = 2
-    
+      list[0].style.zIndex = 2;
+    }
+    console.log(index);
+
+    list[index - 2].style.zIndex = 0;
+
+    list[3].style.zIndex = 0;
+
+    return (list[index - 1].style.zIndex = 2);
   }
-  
-  return handleUp
+
+  return handleUp;
 }
 
- 
-backSlider.addEventListener('click', handleUpSlider(slider))
+backSlider.addEventListener("click", handleUpSlider(slider));
 
-upSlider.addEventListener('click', handleUpSlider(slider))
-
-
-
- 
+upSlider.addEventListener("click", handleUpSlider(slider));
 
 

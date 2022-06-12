@@ -37,4 +37,23 @@ box-shadow: rgb(0 0 0 / 10%) 0px 0px 20px;
 
 }
 
+.tr {
+    background-color:#FAFAFA;
+}
+.description2{
+    position: relative;
+}
+.description2::after {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 89%;
+    top: 42px;
+    background-image: linear-gradient(rgba(255, 255, 255, 0), rgb(255, 255, 255));
+}
+
+
+
+
 
